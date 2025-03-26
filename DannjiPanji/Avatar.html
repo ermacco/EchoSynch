@@ -81,43 +81,56 @@
                     console.log('Faccia non valida');
             }
         }
-
+    
         // Riconoscimento vocale con Web Speech API
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         recognition.lang = 'it-IT'; // Imposta la lingua italiana
         recognition.continuous = true;
-
+    
         recognition.onresult = (event) => {
             const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
             console.log('Parola riconosciuta:', transcript);
-
+    
             // Mappa delle parole ai numeri del dado
             const faceMap = (transcript) => {
+                // Mappa per convertire numeri alfanumerici in numeri
+                const numberWords = {
+                    'uno': 1,
+                    'due': 2,
+                    'tre': 3,
+                    'quattro': 4,
+                    'cinque': 5,
+                    'sei': 6
+                };
+    
+                // Cerca un numero alfanumerico nella frase
+                for (const [word, number] of Object.entries(numberWords)) {
+                    if (transcript.includes(word)) {
+                        return number;
+                    }
+                }
+    
                 // Cerca il primo numero intero compreso tra 1 e 6 nella frase
                 const match = transcript.match(/\b[1-6]\b/); // Regex per trovare numeri da 1 a 6 come parole isolate
                 if (match) {
-                 return parseInt(match[0], 10); // Converte il numero trovato in un intero
+                    return parseInt(match[0], 10); // Converte il numero trovato in un intero
                 }
+    
                 return null; // Nessun numero valido trovato
             };
-
-const face = faceMap(transcript);
-if (face) {
-    rotateCube(face); // Ruota il dado sulla faccia corrispondente
-} else {
-    console.log('Nessun numero valido trovato nella frase');
-}   
-            if (faceMap[transcript]) {
-                rotateCube(faceMap[transcript]); // Ruota il dado sulla faccia corrispondente
+    
+            const face = faceMap(transcript);
+            if (face) {
+                rotateCube(face); // Ruota il dado sulla faccia corrispondente
             } else {
-                console.log('Parola non valida per il dado');
+                console.log('Nessun numero valido trovato nella frase');
             }
         };
-
+    
         recognition.onerror = (event) => {
             console.error('Errore nel riconoscimento vocale:', event.error);
         };
-
+    
         // Avvia il riconoscimento vocale
         recognition.start();
     </script>
