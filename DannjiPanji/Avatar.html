@@ -92,15 +92,21 @@
             console.log('Parola riconosciuta:', transcript);
 
             // Mappa delle parole ai numeri del dado
-            const faceMap = {
-                'uno': 1,
-                'due': 2,
-                'tre': 3,
-                'quattro': 4,
-                'cinque': 5,
-                'sei': 6
+            const faceMap = (transcript) => {
+                // Cerca il primo numero intero compreso tra 1 e 6 nella frase
+                const match = transcript.match(/\b[1-6]\b/); // Regex per trovare numeri da 1 a 6 come parole isolate
+                if (match) {
+                 return parseInt(match[0], 10); // Converte il numero trovato in un intero
+                }
+                return null; // Nessun numero valido trovato
             };
 
+const face = faceMap(transcript);
+if (face) {
+    rotateCube(face); // Ruota il dado sulla faccia corrispondente
+} else {
+    console.log('Nessun numero valido trovato nella frase');
+}   
             if (faceMap[transcript]) {
                 rotateCube(faceMap[transcript]); // Ruota il dado sulla faccia corrispondente
             } else {
