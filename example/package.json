@@ -1,0 +1,20 @@
+{
+  "name": "three-example",
+  "version": "1.0.0",
+  "description": "three.js example ",
+  "main": "index.js",
+  "author": "",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview --port 3000 --host"
+  },
+  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "three": "^0.176.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}

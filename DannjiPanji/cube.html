@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traduttore | Traduci tramite l'avatar</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            perspective: 1000px;
+        }
+
+        .cube {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg); /* Default position */
+            transition: transform 1s ease-in-out; /* Smooth transition */
+        }
+
+        .cube div {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: white;
+            border: 2px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .front  { transform: rotateY(0deg) translateZ(50px); }
+        .back   { transform: rotateY(180deg) translateZ(50px); }
+        .right  { transform: rotateY(90deg) translateZ(50px); }
+        .left   { transform: rotateY(-90deg) translateZ(50px); }
+        .top    { transform: rotateX(90deg) translateZ(50px); }
+        .bottom { transform: rotateX(-90deg) translateZ(50px); }
+    </style>
+</head>
+<body>
+    <div class="cube">
+        <div class="front">1</div>
+        <div class="back">6</div>
+        <div class="right">3</div>
+        <div class="left">4</div>
+        <div class="top">5</div>
+        <div class="bottom">2</div>
+    </div>
+    <script>
+        // Funzione per orientare il dado sulla faccia corretta
+        function rotateCube(face) {
+            const cube = document.querySelector('.cube');
+            switch (face) {
+                case 1: // Mostra la faccia "1"
+                    cube.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                    break;
+                case 2: // Mostra la faccia "2"
+                    cube.style.transform = 'rotateX(90deg) rotateY(0deg)';
+                    break;
+                case 3: // Mostra la faccia "3"
+                    cube.style.transform = 'rotateX(0deg) rotateY(-90deg)';
+                    break;
+                case 4: // Mostra la faccia "4"
+                    cube.style.transform = 'rotateX(0deg) rotateY(90deg)';
+                    break;
+                case 5: // Mostra la faccia "5"
+                    cube.style.transform = 'rotateX(-90deg) rotateY(0deg)';
+                    break;
+                case 6: // Mostra la faccia "6"
+                    cube.style.transform = 'rotateX(0deg) rotateY(180deg)';
+                    break;
+                default:
+                    console.log('Faccia non valida');
+            }
+        }
+    
+        // Riconoscimento vocale con Web Speech API
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'it-IT'; // Imposta la lingua italiana
+        recognition.continuous = true;
+    
+        recognition.onresult = (event) => {
+            const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+            console.log('Parola riconosciuta:', transcript);
+    
+            // Mappa delle parole ai numeri del dado
+            const faceMap = (transcript) => {
+                // Mappa per convertire numeri alfanumerici in numeri
+                const numberWords = {
+                    'uno': 1,
+                    'due': 2,
+                    'tre': 3,
+                    'quattro': 4,
+                    'cinque': 5,
+                    'sei': 6
+                };
+    
+                // Cerca un numero alfanumerico nella frase
+                for (const [word, number] of Object.entries(numberWords)) {
+                    if (transcript.includes(word)) {
+                        return number;
+                    }
+                }
+    
+                // Cerca il primo numero intero compreso tra 1 e 6 nella frase
+                const match = transcript.match(/\b[1-6]\b/); // Regex per trovare numeri da 1 a 6 come parole isolate
+                if (match) {
+                    return parseInt(match[0], 10); // Converte il numero trovato in un intero
+                }
+    
+                return null; // Nessun numero valido trovato
+            };
+    
+            const face = faceMap(transcript);
+            if (face) {
+                rotateCube(face); // Ruota il dado sulla faccia corrispondente
+            } else {
+                console.log('Nessun numero valido trovato nella frase');
+            }
+        };
+    
+        recognition.onerror = (event) => {
+            console.error('Errore nel riconoscimento vocale:', event.error);
+        };
+    
+        // Avvia il riconoscimento vocale
+        recognition.start();
+    </script>
+</body>
+</html>
