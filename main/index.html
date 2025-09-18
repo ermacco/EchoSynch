@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Example - Three</title>
+    <meta name="description" content="Lite WebApp Template">
+
+    <meta name="author" content="@X"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="currentColor">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- TODO Fallback ico and svg favicon 
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"> -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <style>
+
+      :root {
+        --text1: hsl(200, 65%, 15%);
+        --surface1: whitesmoke;
+      }
+
+      /* reset browser defaults */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      } */
+
+      html {
+        color-scheme: light;
+
+        /* block-size: 100%; */
+        min-block-size: 100vh;
+
+        /* base rem unit (10px) */
+        font-size: 62.5%;
+
+        background-color: var(--surface1);
+        color: var(--text1);
+      }
+
+      html[data-theme="dark"] {
+        color-scheme: dark;
+      }
+
+      body  {
+        min-block-size: 100vh;
+        font-family: system-ui, sans-serif;
+        font-size: 1.9rem;
+        /* WCAG no less than 1.5 dyslexic */
+        line-height: 1.5;
+
+        display: grid;
+        /* justify-items + align-items */
+        place-items: center;
+        gap: 5rem;
+      }
+
+      main {
+        background-color: whitesmoke;
+      }
+
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      
+      @media only screen and (min-width: 767px) {
+
+      }
+      
+    </style>
+    
+  </head>
+
+  <body>
+
+    <noscript>
+      Please enable JavaScript to view this website.
+    </noscript>
+
+    <!-- Import Js Module -->
+    <script type="module" src="/src/main.js">
+
+      window.addEventListener('DOMContentLoaded', (e) => {
+        console.log('@DOM >> Ready')
+      })
+
+    </script>
+
+  </body>
+</html>
